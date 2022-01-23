@@ -42,3 +42,65 @@
 .gallery__link:hover {
   cursor: zoom-in;
 }
+
+.basicLightbox__nav {
+  position: fixed;
+  top: 50%;
+  left: 0;
+  right: 0;
+  z-index: 1001;
+}
+
+.basicLightbox__nav--close-btn {
+  font-size: 40px;
+  position: absolute;
+  right: 30px;
+  top: 20px;
+  color: rgba(0, 0, 0, 0.7);
+  text-align: center;
+}
+
+.basicLightbox__nav--close-btn,
+.basicLightbox__nav--arrow {
+  margin: 0;
+  margin-top: 0px;
+  padding: 0;
+  border: 0;
+  cursor: pointer;
+  background: none;
+}
+
+.basicLightbox__nav--arrow::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -10px 0 0 -20px;
+  border: 10px solid transparent;
+  border-right-color: transparent;
+}
+
+.basicLightbox__nav--arrow {
+  position: absolute;
+  top: 50%;
+  width: 50px;
+  height: 20px;
+  opacity: 0.7;
+  text-indent: -600px;
+  overflow: hidden;
+}
+
+.basicLightbox__nav--arrow.prev::before {
+  border-right-color: rgb(0, 0, 0);
+}
+
+.basicLightbox__nav--arrow.prev {
+  left: 0;
+}
+
+.basicLightbox__nav--arrow.next::before {
+  border-left-color: rgb(0, 0, 0);
+}
+.basicLightbox__nav--arrow.next {
+  right: 0;
+}
