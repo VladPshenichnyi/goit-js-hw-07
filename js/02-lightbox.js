@@ -5,7 +5,7 @@ galleryRef.innerHTML = createMarkup();
 
 const lightbox = new SimpleLightbox(".gallery a", {
     captionsData: 'alt',
-    captionDelay: 250,
+    captionDelay: 200,
 });
 
 function createMarkup() {
