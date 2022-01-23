@@ -1,117 +1,53 @@
-import { galleryItems } from './gallery-items.js';
-// Change code below this line
-const galleryRef = document.querySelector(".gallery");
-galleryRef.innerHTML = createMarkup();
-galleryRef.addEventListener("click", onClickImage);
+import { galleryItems } from './gallery-items.js'
 
-let newInstance = "";
-let navButtons = "";
-let closeButton = "";
-let idx = 0;
+const galleryEl = document.querySelector('.gallery')
+const imageRef = document.querySelectorAll('.gallery__image')
 
-function createMarkup() {
-    let markup = "";
-    for (let i = 0; i < galleryItems.length; i += 1) {
-    const { preview, original, description } = galleryItems[i];
-    markup += `<div class="gallery__item">
-    <a class="gallery__link" href="${original}">
-        <img
-        id="#${i}"
-        class="gallery__image"
-        src="${preview}"
-        data-source="${original}"
-        alt="${description}"
-        />
-    </a>
-    </div>`;
+const galleryImageMarkup = createGalleryImageMarkup(galleryItems)
+galleryEl.insertAdjacentHTML('beforeend', galleryImageMarkup)
+
+
+function createGalleryImageMarkup(galleryItems) {
+    return galleryItems
+    .map(({ preview, original, description }) => {
+        return `
+        <div class="gallery__item">
+            <a class="gallery__link" href="${original}">
+                <img
+                class="gallery__image"
+                src="${preview}"
+                data-source="${original}"
+                alt="${description}"
+                />
+            </a>
+        </div >
+        `
+    })
+    .join('')
+}
+
+galleryEl.addEventListener('click', onImageClick)
+
+function onImageClick(e) {
+    e.preventDefault()
+    if (!e.target.classList.contains('gallery__image')) {
+        return
     }
 
-    return markup;
-}
+    imageRef.src = e.target.dataset.source
 
-function getImageForView(number, step) {
-    const element = newInstance.element();
-    number += step;
-    if (number < 0) {
-    number = galleryItems.length - 1;
+    const instance = basicLightbox.create(
+        `<img src="${imageRef.src}" alt="${imageRef.alt}" />`)
+
+    instance.show()
+
+    if (instance.visible()) {
+        galleryEl.addEventListener('keydown', onEscBtnPress)
     }
-    else if (number === galleryItems.length) {
-    number = 0;
-    }
-    element.firstElementChild.children[0].src = galleryItems[number].original;
-    element.firstElementChild.children[0].alt = galleryItems[number].description;
 
-    return number;
-}
-
-function lightboxButtonsAdd(instance) {
-    const elem = instance.element();
-    elem.innerHTML += `<button type="button" title="Close" class="basicLightbox__nav--close-btn">×</button>
-    <div class="basicLightbox__nav">
-        <button type="button" title="Previous" class="prev basicLightbox__nav--arrow">Previous</button>
-        <button type="button" title="Next" class="next basicLightbox__nav--arrow">Next</button>
-    </div>`;
-
-    navButtons = elem.querySelector(".basicLightbox__nav");
-    closeButton = elem.querySelector(".basicLightbox__nav--close-btn");
-}
-
-function lightboxListenersAdd() {
-    closeButton.addEventListener("click", onCloseButton);
-    navButtons.addEventListener("click", onClickButton);
-    window.addEventListener("keyup", onKeyPress);
-}
-
-function lightboxListenersRemove() {
-    closeButton.removeEventListener("click", onCloseButton);
-    navButtons.removeEventListener("click", onClickButton);
-    window.removeEventListener("keyup", onKeyPress);
-}
-
-function onClickButton(e) {
-    if (e.target.classList.contains("next")) {
-    idx = getImageForView(idx, 1);
-    }
-    else if (e.target.classList.contains("prev")) {
-    idx = getImageForView(idx, -1);
+    function onEscBtnPress(e) {
+        if (e.code === 'Escape') {
+            instance.close()
+        }
     }
 }
-
-function onClickImage(e) {
-    e.preventDefault();
-    if (e.target.tagName === "IMG") {
-    idx = Number(e.target.attributes.id.value.substring(1));
-    newInstance = basicLightbox.create(`<img src="${galleryItems[idx].original}" alt="${galleryItems[idx].description}">`,{
-    onShow: (instance) => {
-        lightboxButtonsAdd(instance);
-        lightboxListenersAdd();
-        },
-        onClose: (instance) => {
-        lightboxListenersRemove();
-        },
-    });
-    newInstance.show();
-    }
-}
-
-function onCloseButton(e) {
-    newInstance.close();
-}
-
-function onKeyPress(event) {
-    switch (event.key) {
-    case "Esc":
-    case "Escape":
-    newInstance.close();
-    break;
-    case "Left":
-    case "ArrowLeft":
-    idx = getImageForView(idx, -1);
-    break;
-    case "Right":
-    case "ArrowRight":
-    idx = getImageForView(idx, 1);
-    break;
-    }
-}
-console.log(galleryItems);
