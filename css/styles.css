@@ -91,7 +91,7 @@
 }
 
 .basicLightbox__nav--arrow.prev::before {
-  border-right-color: rgb(0, 0, 0);
+  border-right-color: #000;
 }
 
 .basicLightbox__nav--arrow.prev {
@@ -99,7 +99,7 @@
 }
 
 .basicLightbox__nav--arrow.next::before {
-  border-left-color: rgb(0, 0, 0);
+  border-left-color: #000;
 }
 .basicLightbox__nav--arrow.next {
   right: 0;
