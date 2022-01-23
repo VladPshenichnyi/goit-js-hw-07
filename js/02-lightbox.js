@@ -3,7 +3,10 @@ import { galleryItems } from './gallery-items.js';
 const galleryRef = document.querySelector(".gallery");
 galleryRef.innerHTML = createMarkup();
 
-let lightbox = new SimpleLightbox(".gallery a", {});
+const lightbox = new SimpleLightbox(".gallery a", {
+    captionsData: 'alt',
+    captionDelay: 250,
+});
 
 function createMarkup() {
     let markup = "";
@@ -16,4 +19,3 @@ function createMarkup() {
 
     return markup;
 }
-console.log(galleryItems);
